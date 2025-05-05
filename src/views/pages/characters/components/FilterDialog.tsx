@@ -5,13 +5,11 @@ interface FilterDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onApplyFilters: (filters: any) => void;
+  currentFilters: FilterValues;
 }
 
-const FilterDialog = ({ isOpen, onClose, onApplyFilters  }: FilterDialogProps) => {
-  const [filters, setFilters] = useState({
-    character: "All",
-    specie: "All",
-  });
+const FilterDialog = ({ isOpen, onClose, onApplyFilters, currentFilters }: FilterDialogProps) => {
+  const [filters, setFilters] = useState(currentFilters);
 
   const handleSelect = (filterKey: string, value: string) => {
     setFilters((prev) => ({ ...prev, [filterKey]: value }));

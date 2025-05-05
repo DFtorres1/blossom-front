@@ -28,7 +28,7 @@ const CharacterList: FC<LayoutProps> = ({ children }) => {
     <div className="w-screen flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-screen overflow-hidden">
       <div className="w-screen md:w-full md:col-span-1 bg-whiteSmoke text-primary overflow-y-auto">
         <section className="sticky top-0 left-0 bg-whiteSmoke pb-8">
-          <SearchBar onFilter={setFilters}/>
+          <SearchBar onFilter={setFilters} currentFilters={filters}/>
         </section>
         <div>
           {!error && data ? (

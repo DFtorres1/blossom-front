@@ -5,9 +5,10 @@ import { useState } from "react";
 
 type SearchBarProps = {
   onFilter: (filters: any) => void;
+  currentFilters: FilterValues;
 };
 
-const SearchBar = ({ onFilter }: SearchBarProps) => {
+const SearchBar = ({ onFilter, currentFilters }: SearchBarProps) => {
   const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
 
   const handleChangeFilterDialog = () => {
@@ -34,6 +35,7 @@ const SearchBar = ({ onFilter }: SearchBarProps) => {
           isOpen={isFilterDialogOpen}
           onClose={handleChangeFilterDialog}
           onApplyFilters={onFilter}
+          currentFilters={currentFilters}
         />
       </div>
     </search>

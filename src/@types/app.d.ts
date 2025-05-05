@@ -10,6 +10,11 @@ type SearchParams = {
   search: string;
 };
 
+type FilterValues = {
+  character: string;
+  specie: string;
+};
+
 type Config = {
   defaultOrder: PaginationOrder;
   defaultOrderBy: string;
