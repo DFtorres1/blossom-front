@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FilterItem from "./FilterItem";
+import { FaArrowLeft } from "react-icons/fa6";
 
 interface FilterDialogProps {
   isOpen: boolean;
@@ -8,7 +9,12 @@ interface FilterDialogProps {
   currentFilters: FilterValues;
 }
 
-const FilterDialog = ({ isOpen, onClose, onApplyFilters, currentFilters }: FilterDialogProps) => {
+const FilterDialog = ({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  currentFilters,
+}: FilterDialogProps) => {
   const [filters, setFilters] = useState(currentFilters);
 
   const handleSelect = (filterKey: string, value: string) => {
@@ -31,6 +37,10 @@ const FilterDialog = ({ isOpen, onClose, onApplyFilters, currentFilters }: Filte
       "
     >
       <div className="space-y-6">
+        <FaArrowLeft
+          className="block md:hidden text-primaryBlue my-6 h-8 w-8 cursor-pointer"
+          onClick={onClose}
+        />
         <FilterItem
           title="Character"
           options={[
