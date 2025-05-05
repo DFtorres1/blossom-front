@@ -9,7 +9,7 @@ const routesConfig: RoutesType[] = [
     exact: true,
     layout: Layout,
     path: "/",
-    component: lazy(() => import("src/views/pages/characters/CharacterList")),
+    component: () => <Navigate to="/character" />,
   },
   {
     id: "not-found",
@@ -20,9 +20,27 @@ const routesConfig: RoutesType[] = [
   },
   {
     id: "*",
-    layout: Layout,
     path: "*",
     component: () => <Navigate to="/404" />,
+  },
+  {
+    id: "character",
+    path: "/character/*",
+    layout: lazy(() => import("src/views/pages/characters/CharacterList")),
+    routes: [
+      {
+        id: "character-list",
+        path: "/",
+        exact: true,
+        component: lazy(() => import("src/views/pages/characters/CharacterDetail")),
+      },
+      {
+        id: "character-list",
+        path: "/:id",
+        exact: true,
+        component: lazy(() => import("src/views/pages/characters/CharacterDetail")),
+      }
+    ]
   },
 ];
 
