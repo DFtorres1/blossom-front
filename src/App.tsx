@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import RenderRoutes from "./Routes";
 
 const client = new ApolloClient({
-  uri: "https://api.spacex.land/graphql/",
+  uri: import.meta.env.VITE_API_SERVER_URL + '/graphql',
   cache: new InMemoryCache(),
 });
 
