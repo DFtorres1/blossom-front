@@ -10,6 +10,6 @@ type Character = {
   species: string;
   gender: string;
   image_path: string;
-  is_starred: string;
+  is_starred: boolean;
   origin: Origin;
 };

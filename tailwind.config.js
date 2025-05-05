@@ -23,6 +23,7 @@ export default {
         secondary: "#6B7280",
         dark: "#111827",
         starred: "#63D838",
+        primaryBlue: "#8054C7"
       },
     },
   },

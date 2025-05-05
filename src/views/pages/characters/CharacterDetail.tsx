@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useCharacterDetail from "./hooks/useCharacterDetail";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ColumnText from "./components/ColumnText";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
+import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa6";
 
 interface CharacterDescription {
   title: string;
@@ -10,27 +10,25 @@ interface CharacterDescription {
 }
 
 const CharacterDetail = () => {
-  const [character, setCharacter] = useState<Character>();
-  const [characterDescription, setCharacterDescription] =
-    useState<CharacterDescription[]>();
+  const navigate = useNavigate();
 
   const { id } = useParams();
   const { data, loading, error } = useCharacterDetail(+(id ?? 0));
 
-  useEffect(() => {
-    if (!loading && data) {
-      setCharacter(data.character);
-    }
-  }, [data, loading]);
+  const handleNavToHome = () => {
+    navigate("/character");
+  };
 
-  useEffect(() => {
-    if (character) {
-      let description: CharacterDescription[] = [];
-      description.push({ title: "Specie", description: character.species });
-      description.push({ title: "Status", description: character.status });
-      description.push({ title: "Origin", description: character.origin.name });
-      setCharacterDescription([...description]);
-    }
+  const character = data?.character;
+
+  const characterDescription = useMemo(() => {
+    if (!character) return [];
+
+    return [
+      { title: "Specie", description: character.species },
+      { title: "Status", description: character.status },
+      { title: "Origin", description: character.origin.name },
+    ];
   }, [character]);
 
   if (loading) {
@@ -39,12 +37,20 @@ const CharacterDetail = () => {
 
   return (
     <section
-      className={`${id ? "": "hidden" } md:col-span-1 lg:col-span-2 xl:col-span-3 md:block px-6 md:px-24 py-10`}
+      className={`${!id && "hidden"}
+        fixed inset-0 z-50 bg-white overflow-y-auto 
+        md:static md:block md:px-24 md:z-auto md:col-span-1 
+        lg:col-span-2 xl:col-span-3 px-6 py-10
+        `}
     >
       {id ? (
         <div>
           {!error && character ? (
             <div className="flex flex-col">
+              <FaArrowLeft
+                className="block md:hidden text-primaryBlue my-6 h-8 w-8 cursor-pointer"
+                onClick={handleNavToHome}
+              />
               <section className="pb-4 flex flex-col">
                 <div className="relative w-20 h-20">
                   <img
@@ -64,16 +70,15 @@ const CharacterDetail = () => {
               </section>
               <section className="flex flex-col">
                 {characterDescription?.map((desc, idx) => (
-                  <>
+                  <div key={desc.title}>
                     {idx !== 0 && <hr />}
                     <div className="py-4">
                       <ColumnText
-                        key={desc.title}
                         topText={desc.title}
                         bottomText={desc.description}
                       />
                     </div>
-                  </>
+                  </div>
                 ))}
               </section>
             </div>

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useMemo } from "react";
 import useCharacterList from "./hooks/useCharacterList";
 import SearchBar from "./components/Searchbar";
 import CharacterListRendering from "./components/CharacterListRendering";
@@ -8,21 +8,14 @@ type LayoutProps = {
 };
 
 const CharacterList: FC<LayoutProps> = ({ children }) => {
-  const [starredCharacters, setStarredCharacters] = useState<Character[]>([]);
-  const [normalCharacters, setNormalCharacters] = useState<Character[]>([]);
-
   const { data, loading, error } = useCharacterList();
-
-  useEffect(() => {
-    if (!loading && data) {
-      data.characters.forEach((char: Character) => {
-        if (char.is_starred) {
-          setStarredCharacters((prev) => [...prev, char]);
-        } else {
-          setNormalCharacters((prev) => [...prev, char]);
-        }
-      });
-    }
+  
+  const starredCharacters = useMemo(() => {
+    return data?.characters.filter((char: Character) => char.is_starred) || [];
+  }, [data]);
+  
+  const normalCharacters = useMemo(() => {
+    return data?.characters.filter((char: Character) => !char.is_starred) || [];
   }, [data]);
 
   if (loading) {
