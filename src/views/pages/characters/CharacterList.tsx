@@ -8,7 +8,7 @@ type LayoutProps = {
 };
 
 const CharacterList: FC<LayoutProps> = ({ children }) => {
-  const [filters, setFilters] = useState({ character: "All", specie: "All", name: "" });
+  const [filters, setFilters] = useState({ character: "All", specie: "All", name: "", sort: "ASC" });
 
   const { data, loading, error } = useCharacterList(filters);
   
