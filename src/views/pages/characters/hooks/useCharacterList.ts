@@ -12,8 +12,14 @@ export const CHARACTERS_QUERY = gql`
   }
 `;
 
-const useCharacterList = (filters: { character: string; specie: string }) => {
-  const variables: any = {};
+type CharactersQueryVariables = {
+  name?: string;
+  species?: string;
+  is_starred?: boolean;
+};
+
+const useCharacterList = (filters: FilterValues) => {
+  const variables: CharactersQueryVariables = {};
 
   if (filters.character === "Starred") {
     variables.is_starred = true;
@@ -22,6 +28,7 @@ const useCharacterList = (filters: { character: string; specie: string }) => {
   }
 
   if (filters.specie !== "All") variables.species = filters.specie;
+  if (filters.name.trim() !== "") variables.name = filters.name.trim();
 
   return useQuery(CHARACTERS_QUERY, { variables });
 };

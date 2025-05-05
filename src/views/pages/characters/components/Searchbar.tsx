@@ -10,9 +10,18 @@ type SearchBarProps = {
 
 const SearchBar = ({ onFilter, currentFilters }: SearchBarProps) => {
   const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState(currentFilters.name);
 
   const handleChangeFilterDialog = () => {
     setIsFilterDialogOpen((prev) => !prev);
+  };
+
+  const handleSearch = () => {
+    onFilter({ ...currentFilters, name: searchValue });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleSearch();
   };
 
   return (
@@ -21,10 +30,13 @@ const SearchBar = ({ onFilter, currentFilters }: SearchBarProps) => {
         Rick and Morty list
       </span>
       <div className="mx-5 mt-4 py-2 px-3 h-[52px] flex flex-[1_0_0] betwe items-center gap-2 rounded-lg bg-coolGray-100 text-secondary">
-        <IoSearch className="w-5 h-5" />
+        <IoSearch className="w-5 h-5 cursor-pointer" onClick={handleSearch} />
         <input
           className="bg-transparent text-sm font-medium w-full"
           placeholder="Search or filter results"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <HiOutlineAdjustments
           className="w-5 h-5 cursor-pointer"

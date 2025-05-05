@@ -13,6 +13,7 @@ type SearchParams = {
 type FilterValues = {
   character: string;
   specie: string;
+  name: string
 };
 
 type Config = {
