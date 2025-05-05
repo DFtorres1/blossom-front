@@ -8,14 +8,19 @@ type LayoutProps = {
 };
 
 const CharacterList: FC<LayoutProps> = ({ children }) => {
-  const [filters, setFilters] = useState({ character: "All", specie: "All", name: "", sort: "ASC" });
+  const [filters, setFilters] = useState({
+    character: "All",
+    specie: "All",
+    name: "",
+    sort: "ASC",
+  });
 
   const { data, loading, error } = useCharacterList(filters);
-  
+
   const starredCharacters = useMemo(() => {
     return data?.characters.filter((char: Character) => char.is_starred) || [];
   }, [data]);
-  
+
   const normalCharacters = useMemo(() => {
     return data?.characters.filter((char: Character) => !char.is_starred) || [];
   }, [data]);
@@ -28,7 +33,7 @@ const CharacterList: FC<LayoutProps> = ({ children }) => {
     <div className="w-screen flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-screen overflow-hidden">
       <div className="w-screen md:w-full md:col-span-1 bg-whiteSmoke text-primary overflow-y-auto">
         <section className="sticky top-0 left-0 bg-whiteSmoke pb-8">
-          <SearchBar onFilter={setFilters} currentFilters={filters}/>
+          <SearchBar onFilter={setFilters} currentFilters={filters} />
         </section>
         <div>
           {!error && data ? (

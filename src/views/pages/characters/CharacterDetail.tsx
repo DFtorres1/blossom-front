@@ -5,6 +5,7 @@ import ColumnText from "./components/ColumnText";
 import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa6";
 import useStarCharacter from "./hooks/useStarCharacter";
 import { CHARACTERS_QUERY } from "./hooks/useCharacterList";
+import useDeleteCharacter from "./hooks/useDeleteCharacter";
 
 const CharacterDetail = () => {
   const navigate = useNavigate();
@@ -12,13 +13,9 @@ const CharacterDetail = () => {
   const { id } = useParams();
   const { data, loading, error } = useCharacterDetail(+(id ?? 0));
 
-  const handleNavToHome = () => {
-    navigate("/character");
-  };
-
-  const [starCharacter] = useStarCharacter();
-
   const character = data?.character;
+  const [starCharacter] = useStarCharacter();
+  const [deleteCharacter] = useDeleteCharacter();
 
   const characterDescription = useMemo(() => {
     if (!character) return [];
@@ -29,6 +26,10 @@ const CharacterDetail = () => {
       { title: "Origin", description: character.origin.name },
     ];
   }, [character]);
+
+  const handleNavToHome = () => {
+    navigate("/character");
+  };
 
   const handleStarCharacter = () => {
     starCharacter({
@@ -52,6 +53,19 @@ const CharacterDetail = () => {
       },
       refetchQueries: [{ query: CHARACTERS_QUERY }],
     });
+  };
+
+  const handleDeleteCharacter = () => {
+    deleteCharacter({
+      variables: { id: character.id },
+      refetchQueries: [{ query: CHARACTERS_QUERY }],
+    })
+      .then(() => {
+        navigate("/character");
+      })
+      .catch((err) => {
+        console.error("Error deleting character: ", err);
+      });
   };
 
   if (loading) {
@@ -106,6 +120,14 @@ const CharacterDetail = () => {
                     </div>
                   </div>
                 ))}
+              </section>
+              <section>
+                <button
+                  className="bg-coolGray-100 rounded-lg py-2 font-semibold w-20"
+                  onClick={handleDeleteCharacter}
+                >
+                  Delete
+                </button>
               </section>
             </div>
           ) : (
