@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import useCharacterList from "./hooks/useCharacterList";
 import SearchBar from "./components/Searchbar";
 import CharacterListRendering from "./components/CharacterListRendering";
@@ -8,7 +8,9 @@ type LayoutProps = {
 };
 
 const CharacterList: FC<LayoutProps> = ({ children }) => {
-  const { data, loading, error } = useCharacterList();
+  const [filters, setFilters] = useState({ character: "All", specie: "All" });
+
+  const { data, loading, error } = useCharacterList(filters);
   
   const starredCharacters = useMemo(() => {
     return data?.characters.filter((char: Character) => char.is_starred) || [];
@@ -26,7 +28,7 @@ const CharacterList: FC<LayoutProps> = ({ children }) => {
     <div className="w-screen flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-screen overflow-hidden">
       <div className="w-screen md:w-full md:col-span-1 bg-whiteSmoke text-primary overflow-y-auto">
         <section className="sticky top-0 left-0 bg-whiteSmoke pb-8">
-          <SearchBar />
+          <SearchBar onFilter={setFilters}/>
         </section>
         <div>
           {!error && data ? (

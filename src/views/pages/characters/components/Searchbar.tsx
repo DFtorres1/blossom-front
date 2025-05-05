@@ -1,9 +1,21 @@
 import { HiOutlineAdjustments } from "react-icons/hi";
 import { IoSearch } from "react-icons/io5";
+import FilterDialog from "./FilterDialog";
+import { useState } from "react";
 
-const SearchBar = () => {
+type SearchBarProps = {
+  onFilter: (filters: any) => void;
+};
+
+const SearchBar = ({ onFilter }: SearchBarProps) => {
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+
+  const handleChangeFilterDialog = () => {
+    setIsFilterDialogOpen((prev) => !prev);
+  };
+
   return (
-    <search className="pt-11">
+    <search className="pt-11 relative">
       <span className="px-6 pb-2 text-primary font-normal text-2xl">
         Rick and Morty list
       </span>
@@ -13,7 +25,16 @@ const SearchBar = () => {
           className="bg-transparent text-sm font-medium w-full"
           placeholder="Search or filter results"
         />
-        <HiOutlineAdjustments className="w-5 h-5" />
+        <HiOutlineAdjustments
+          className="w-5 h-5 cursor-pointer"
+          onClick={handleChangeFilterDialog}
+        />
+
+        <FilterDialog
+          isOpen={isFilterDialogOpen}
+          onClose={handleChangeFilterDialog}
+          onApplyFilters={onFilter}
+        />
       </div>
     </search>
   );
