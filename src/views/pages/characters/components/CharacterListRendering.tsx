@@ -15,7 +15,7 @@ const CharacterListRendering = ({
         </span>
       </h4>
       {characters.map((character) => (
-        <CharacterItemRendering character={character} />
+        <CharacterItemRendering key={character.id} character={character} />
       ))}
     </>
   );

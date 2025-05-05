@@ -48,7 +48,7 @@ const CharacterList: FC<LayoutProps> = ({ children }) => {
               />
             </section>
           ) : (
-            <div>There was a trouble while gathering the information</div>
+            <div>There were a trouble while gathering the information</div>
           )}
         </div>
       </div>
