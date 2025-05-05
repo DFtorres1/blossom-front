@@ -1,15 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useCharacterDetail from "./hooks/useCharacterDetail";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import ColumnText from "./components/ColumnText";
 import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa6";
 import useStarCharacter from "./hooks/useStarCharacter";
 import { CHARACTERS_QUERY } from "./hooks/useCharacterList";
-
-interface CharacterDescription {
-  title: string;
-  description: string;
-}
 
 const CharacterDetail = () => {
   const navigate = useNavigate();
