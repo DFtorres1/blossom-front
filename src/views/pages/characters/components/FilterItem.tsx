@@ -1,16 +1,21 @@
 interface Option {
-    label: string;
-    value: string;
-  }
-  
-  interface FilterItemProps {
-    title: string;
-    options: Option[];
-    selectedValue: string;
-    onSelect: (value: string) => void;
-  }
+  label: string;
+  value: string;
+}
 
-const FilterItem = ({ title, options, selectedValue, onSelect }: FilterItemProps) => {
+interface FilterItemProps {
+  title: string;
+  options: Option[];
+  selectedValue: string;
+  onSelect: (value: string) => void;
+}
+
+const FilterItem = ({
+  title,
+  options,
+  selectedValue,
+  onSelect,
+}: FilterItemProps) => {
   return (
     <div>
       <h3 className="text-sm font-medium mb-3">{title}</h3>
@@ -20,7 +25,11 @@ const FilterItem = ({ title, options, selectedValue, onSelect }: FilterItemProps
             key={option.value}
             onClick={() => onSelect(option.value)}
             className={`rounded-lg py-4 font-semibold border 
-              ${selectedValue === option.value ? 'bg-primary-100 text-primaryBlue' : ''}`}
+              ${
+                selectedValue === option.value
+                  ? "bg-primary-100 text-primaryBlue"
+                  : ""
+              }`}
           >
             {option.label}
           </button>

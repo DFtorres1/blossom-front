@@ -2,6 +2,7 @@ import { HiOutlineAdjustments } from "react-icons/hi";
 import { IoSearch } from "react-icons/io5";
 import FilterDialog from "./FilterDialog";
 import { useState } from "react";
+import { HiArrowsUpDown } from "react-icons/hi2";
 
 type SearchBarProps = {
   onFilter: (filters: any) => void;
@@ -18,6 +19,11 @@ const SearchBar = ({ onFilter, currentFilters }: SearchBarProps) => {
 
   const handleSearch = () => {
     onFilter({ ...currentFilters, name: searchValue });
+  };
+
+  const handleSortToggle = () => {
+    const newSort = currentFilters.sort === "ASC" ? "DESC" : "ASC";
+    onFilter({ ...currentFilters, sort: newSort });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -38,8 +44,14 @@ const SearchBar = ({ onFilter, currentFilters }: SearchBarProps) => {
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <HiOutlineAdjustments
+        <HiArrowsUpDown
           className="w-5 h-5 cursor-pointer"
+          onClick={handleSortToggle}
+        />
+        <HiOutlineAdjustments
+          className={`w-5 h-5 cursor-pointer ${
+            isFilterDialogOpen ? "bg-primary-100 text-primaryBlue" : ""
+          }`}
           onClick={handleChangeFilterDialog}
         />
 
