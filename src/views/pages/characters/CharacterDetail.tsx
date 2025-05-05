@@ -58,23 +58,6 @@ const CharacterDetail = () => {
   const handleDeleteCharacter = () => {
     deleteCharacter({
       variables: { id: character.id },
-      update: (cache, { data }) => {
-        const updatedCharacter = data.updateIsStarred;
-
-        const characterId = cache.identify({
-          __typename: "Character",
-          id: updatedCharacter.id,
-        });
-
-        cache.modify({
-          id: characterId,
-          fields: {
-            is_starred() {
-              return updatedCharacter.is_starred;
-            },
-          },
-        });
-      },
       refetchQueries: [{ query: CHARACTERS_QUERY }],
     })
       .then(() => {
