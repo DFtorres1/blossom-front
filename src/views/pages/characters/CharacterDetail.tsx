@@ -3,6 +3,8 @@ import useCharacterDetail from "./hooks/useCharacterDetail";
 import { useEffect, useMemo, useState } from "react";
 import ColumnText from "./components/ColumnText";
 import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa6";
+import useStarCharacter from "./hooks/useStarCharacter";
+import { CHARACTERS_QUERY } from "./hooks/useCharacterList";
 
 interface CharacterDescription {
   title: string;
@@ -19,6 +21,8 @@ const CharacterDetail = () => {
     navigate("/character");
   };
 
+  const [starCharacter] = useStarCharacter();
+
   const character = data?.character;
 
   const characterDescription = useMemo(() => {
@@ -30,6 +34,30 @@ const CharacterDetail = () => {
       { title: "Origin", description: character.origin.name },
     ];
   }, [character]);
+
+  const handleStarCharacter = () => {
+    starCharacter({
+      variables: { id: character.id, is_starred: !character.is_starred },
+      update: (cache, { data }) => {
+        const updatedCharacter = data.updateIsStarred;
+
+        const characterId = cache.identify({
+          __typename: "Character",
+          id: updatedCharacter.id,
+        });
+
+        cache.modify({
+          id: characterId,
+          fields: {
+            is_starred() {
+              return updatedCharacter.is_starred;
+            },
+          },
+        });
+      },
+      refetchQueries: [{ query: CHARACTERS_QUERY }],
+    });
+  };
 
   if (loading) {
     return <div>Loading</div>;
@@ -58,7 +86,10 @@ const CharacterDetail = () => {
                     alt="Avatar"
                     className="w-full h-full object-cover rounded-full"
                   />
-                  <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow">
+                  <div
+                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow cursor-pointer"
+                    onClick={handleStarCharacter}
+                  >
                     {character.is_starred ? (
                       <FaHeart className="text-starred" />
                     ) : (
